@@ -1,0 +1,40 @@
+tôi sẽ dùng vercel làm main web với frontend và cả backend(js), nhưng tôi kết hợp dùng thêm x10hosting database + php để giải quyết phần login và register tại vì vercel không có db 
+nên ônng sẽ làm frontend + backend js đúng chuẩn vercel push github là done, chỉ cần thay endpoint php, ông cung cấp cả mã php cho tôi, + bảng sql database hướng dẫn setup cho tui luôn
+làm cho tôi 1 hệ thống website xịn mang Tên StudySpace
+với hệ thống login, register , có bảo mật với cloudflare tunsitle ( có cookie ) 
+à nếu là register thủ công thì ( username, email, password,ngày/tháng/năm sinh ) 
+đối với register hoặc login thủ công nhập tay thì mới có captcha = cloudflare tunsitle, 
+và ngoài làm thủ công sẽ có thêm 3 lựa chọn nữa, là login trực tiếp = tài khoản google, hoặc facebook, hoặc github, đối với 3 cái này thì không cần xác thực với cloudflare tunsitle , chỉ cần tiếp tục được với 3 nền tảng đấy là được
+site key : 0x4AAAAAAB73yemVVzQT9Kr7
+serrect key : 0x4AAAAAAB73ye6AEry1nmscbI8FjBdMD5Y
+và nó cũng sẽ có nút tick "Ghi nhớ đăng nhập" để mỗi lần vô web khỏi phải login lại 
+trong dashboard sẽ có 1 AI mang tên StudySpace AI ( nó sẽ dùng api key gemini model 2.5 flash để trả lời cho câu hỏi text, còn với image + text or image thì sẽ dùng model 2.0 flash ) 
+web sẽ có lưu cả đoạn chat + lịch sử chat, user có thể tuỳ chọn xoá, tạo chat mới
+AI có thể ghi nhớ được 6-7 tin nhắn gần nhất bằng cách gửi lại cả đoạn chat
+có nhiều loại mode AI 
++ Auto ( tự động chọn mode phù hợp với yêu cầu người dùng
++ Fast ( chế độ toàn diện , custom promt có thể giải quyết mọi vấn đề )
++ AI chuyên toán ( custom prompt cho AI chủ yếu tốt về toán ) 
++ AI chuyên Văn ( custom chuyên giải quyết về ngữ văn, viết văn,...) 
++ AI chuyên tiếng anh, giải đề tiếng anh, làm bt tiếng anh ,....
++ AI Searching ( tìm kiếm thông tin liên quan tới vấn đề của user ) 
++ AI Coding ( làm quả prompt chuyên code ) 
+hỗ trợ gửi ảnh = paste control + v 
+AI cũng hộ trợ đọc các loại file mà api gemini có thể đọc được  
+ông làm sao cho ok + ngon nhất
+website có màu nền tối tối, xanh xanh, chill chill 
+và AI cũng sẽ biết gọi tên user thông qua thông tin đăng nhập của họ ( dùng prompt ) 
+trong đó cũng sẽ có 1 số tiện ích nhỏ như searching , chỉ cần nhập từ cần tìm kiếm, nó sẽ hiện ra những tấm ảnh liên quan tới cái đó ( dùng api do ông tự tìm, ko dùng AI cho cái này nha ) 
+à thêm tiện ích tạo ảnh nữa : dùng endpoint ( ví dụ https://image.pollinations.ai/prompt/a%20box%20with%20the%20text%20HieuDz?width=1024&height=1024&enhance=true&seed=123456&nologo=true ) 
+thay phần prompt thành prompt của user + random seed cho mỗi lần tạo ảnh 
+đối với user free thì sẽ có free 100 requests free per a day cho sử dụng AI 
+nhưng giới hạn khoảng 20k input token cho mỗi requets 
+và nó cũng sẽ sử dụng endpoint stream tin nhắn AI gen tới đâu hiện tới đó không cần đợi gen xong hết mới hiện ví dụ : 
+https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:streamGenerateContent?alt=sse
+https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:streamGenerateContent?alt=sse
+và nhớ là web cũng sẽ hỗ trợ hiển thị các loại định dạng tin nhắn của AI nha, ví dụ ##, codeblock ,...
+và làm thêm gì thì tuỳ ông, làm sao xịn nhất, 100% working, đẹp, chuyên nghiệp, chhill and study space, AI working ngon lành
+và tui dùng kết hợp giữa vercel và x10 ( tại x10 có php với database, sql ) nên ông cứ làm ra 2 thư mục 1 cái vercel, 2 là x10 trong x10 sẽ có code endpoint php, ... , sql bảng code 
+vercel thì full suorce main chính
+
+full api key đó ông hard code luôn cũng được trong backend vercel ấy
