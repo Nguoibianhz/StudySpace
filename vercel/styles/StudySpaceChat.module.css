@@ -1,0 +1,194 @@
+.container {
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  gap: 24px;
+}
+
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  background: rgba(12, 18, 32, 0.78);
+  border: 1px solid rgba(59, 185, 255, 0.2);
+  border-radius: var(--radius-lg);
+  padding: 20px;
+  box-shadow: var(--shadow-soft);
+}
+
+.sidebarHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.historyList {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-height: 460px;
+  overflow-y: auto;
+}
+
+.historyItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 14px;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: background 0.2s ease, border-color 0.2s ease;
+  border: 1px solid transparent;
+  background: rgba(15, 24, 40, 0.5);
+}
+
+.historyItem:hover {
+  border-color: rgba(79, 209, 197, 0.42);
+}
+
+.historyItem.active {
+  border-color: rgba(79, 209, 197, 0.6);
+  background: rgba(15, 24, 40, 0.75);
+}
+
+.historyTitle {
+  font-weight: 600;
+}
+
+.historyMeta {
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+.removeHistory {
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.chatPanel {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  background: rgba(12, 18, 32, 0.78);
+  border: 1px solid rgba(59, 185, 255, 0.2);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  box-shadow: var(--shadow-soft);
+}
+
+.chatHeader {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.modeSelector {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 10px;
+}
+
+.modeButton {
+  background: rgba(15, 24, 40, 0.65);
+  border-radius: var(--radius-md);
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+  border: 1px solid transparent;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: border 0.2s ease, transform 0.2s ease;
+}
+
+.modeButton:hover {
+  border-color: rgba(59, 185, 255, 0.42);
+}
+
+.modeActive {
+  border-color: rgba(79, 209, 197, 0.6);
+  color: var(--text-primary);
+  transform: translateY(-1px);
+}
+
+.modeButton small {
+  font-size: 11px;
+  opacity: 0.8;
+}
+
+.messages {
+  min-height: 320px;
+  max-height: 520px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-right: 6px;
+}
+
+.error {
+  background: rgba(255, 99, 132, 0.1);
+  border: 1px solid rgba(255, 99, 132, 0.25);
+  color: #ff7b9c;
+  border-radius: var(--radius-md);
+  padding: 12px 16px;
+}
+
+.composer {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.attachmentBar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.attachmentChip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: rgba(59, 185, 255, 0.18);
+  font-size: 12px;
+}
+
+.attachmentChip button {
+  background: transparent;
+  border: none;
+  color: var(--text-primary);
+  cursor: pointer;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.hint {
+  color: var(--text-secondary);
+  font-size: 13px;
+}
+
+.buttons {
+  display: flex;
+  gap: 12px;
+}
+
+@media (max-width: 1100px) {
+  .container {
+    grid-template-columns: 1fr;
+  }
+
+  .sidebar {
+    order: 2;
+  }
+}
