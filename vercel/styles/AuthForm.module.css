@@ -1,0 +1,89 @@
+.card {
+  width: min(420px, 100%);
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.header h2 {
+  margin: 0;
+  font-size: 28px;
+}
+
+.header p {
+  margin: 8px 0 0;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.fieldGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: 14px;
+}
+
+.turnstileBox {
+  display: flex;
+  justify-content: center;
+  padding: 12px 0;
+}
+
+.remember {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  color: var(--text-secondary);
+  font-size: 14px;
+}
+
+.error {
+  background: rgba(255, 77, 109, 0.12);
+  color: #ff6b81;
+  border-radius: var(--radius-md);
+  padding: 12px 16px;
+  border: 1px solid rgba(255, 107, 129, 0.24);
+}
+
+.success {
+  background: rgba(79, 209, 197, 0.12);
+  color: var(--accent-strong);
+  border-radius: var(--radius-md);
+  padding: 12px 16px;
+  border: 1px solid rgba(79, 209, 197, 0.24);
+}
+
+.divider {
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: var(--text-secondary);
+  font-size: 12px;
+}
+
+.oauthGrid {
+  display: grid;
+  gap: 12px;
+}
+
+.oauthButton {
+  border-radius: var(--radius-md);
+  border: 1px solid rgba(59, 185, 255, 0.24);
+  padding: 12px 16px;
+  background: rgba(12, 18, 32, 0.75);
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+.oauthButton:hover {
+  transform: translateY(-1px);
+  border-color: rgba(79, 209, 197, 0.55);
+}
