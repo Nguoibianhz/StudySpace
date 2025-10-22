@@ -13,7 +13,6 @@ export default function StudySpaceApp({ Component, pageProps: { session, ...page
           name="description"
           content="StudySpace · Nơi học tập chill với AI Gemini, tiện ích tìm kiếm và tạo ảnh."
         />
-        <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
       </Head>
       <Script
         src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit"
