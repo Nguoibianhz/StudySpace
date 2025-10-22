@@ -1,0 +1,68 @@
+.wrapper {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 24px;
+}
+
+.card {
+  background: rgba(10, 16, 28, 0.85);
+  border: 1px solid rgba(59, 185, 255, 0.2);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  box-shadow: var(--shadow-soft);
+}
+
+.searchBar {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.error {
+  background: rgba(255, 99, 132, 0.1);
+  border: 1px solid rgba(255, 99, 132, 0.25);
+  color: #ff7b9c;
+  border-radius: var(--radius-md);
+  padding: 12px 16px;
+}
+
+.imageGrid {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+}
+
+.imageCard {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px;
+  background: rgba(12, 18, 32, 0.78);
+  border-radius: var(--radius-md);
+  border: 1px solid rgba(59, 185, 255, 0.12);
+  transition: border 0.2s ease;
+}
+
+.imageCard:hover {
+  border-color: rgba(79, 209, 197, 0.5);
+}
+
+.imageCard img {
+  width: 100%;
+  border-radius: var(--radius-sm);
+  object-fit: cover;
+}
+
+.generatedPreview {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.generatedPreview img {
+  width: 100%;
+  border-radius: var(--radius-md);
+}

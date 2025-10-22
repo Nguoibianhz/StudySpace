@@ -1,0 +1,187 @@
+==============================
+StudySpace Deployment Guide
+==============================
+
+This document walks you through preparing both hosting environments that power StudySpace:
+
+1. Vercel (frontend + Node.js API routes)
+2. x10hosting (PHP endpoints + MySQL database)
+
+The project now ships only with source code. Clone the repository (hoặc tải mã nguồn trực tiếp
+trên GitHub) rồi làm theo từng bước bên dưới. Nếu bạn cần một gói ZIP để chia sẻ nhanh, xem mục
+"Tạo file ZIP khi cần" ở cuối tài liệu này.
+
+-------------------------
+1. Prepare Environment
+-------------------------
+
+A. Prerequisites
+----------------
+- Node.js 20.x or newer and npm 10.x or newer
+- Git (for version control and syncing with GitHub)
+- A Vercel account connected to your GitHub repository
+- An x10hosting account with PHP 8.1+ and MySQL 5.7+ or MariaDB 10+
+- Cloudflare account to retrieve the Turnstile keys you already provided
+- Google Cloud project with the Gemini API enabled (keys provided in source)
+- OAuth credentials for Google, Facebook, and GitHub providers
+
+B. Clone the Project
+--------------------
+1. Tạo một repository trống trên GitHub/GitLab của bạn.
+2. Trên máy local, chạy:
+   git clone https://github.com/<tai-khoan>/StudySpace.git
+3. Bên trong thư mục clone sẽ có hai thư mục chính: `vercel` và `x10`, cùng các tài liệu hướng dẫn.
+
+------------------------------------------
+2. Configure the Vercel Next.js Application
+------------------------------------------
+
+A. Local Environment Setup
+---------------------------
+1. Open a terminal in the `vercel` directory.
+2. Run `npm install` to install dependencies.
+3. Duplicate `.env.example` to `.env.local`.
+4. Fill the environment variables:
+   - `NEXTAUTH_URL`: https://study.nguyenmanhhieu.info.vn (change if you deploy on another domain).
+   - `NEXTAUTH_SECRET`: random 32+ character string (generate via `openssl rand -base64 32`).
+   - `NEXT_PUBLIC_PHP_BASE_URL`: https://backend.x10.network/api (default matches the bundled PHP backend).
+   - `GOOGLE_CLIENT_ID` / `GOOGLE_CLIENT_SECRET`: OAuth credentials from Google Cloud Console.
+   - `FACEBOOK_CLIENT_ID` / `FACEBOOK_CLIENT_SECRET`: credentials from Facebook Developer Console.
+   - `GITHUB_CLIENT_ID` / `GITHUB_CLIENT_SECRET`: credentials from GitHub Developer Settings.
+   - `PIXABAY_KEY`: supply your image-search key (create a free Pixabay account if needed).
+   - (Optional) Add your own Gemini keys if you plan to rotate away from the bundled set.
+
+5. Optional: configure additional environment variables documented in README.md if you
+   customize rate limits or branding.
+
+B. Local Development
+---------------------
+1. Run `npm run dev` to launch the development server on http://localhost:3000.
+2. Test manual registration/login flows:
+   - Ensure Turnstile widget appears on manual login/register forms.
+   - Confirm successful responses when the x10 backend is configured (see section 3).
+3. Exercise OAuth providers (Google/Facebook/GitHub) if credentials are set.
+4. Enter the dashboard and confirm the AI assistant streams responses, chat history persists,
+   and utility panels (image search / generator) work.
+
+C. Deploy to Vercel
+--------------------
+1. Push the `vercel` folder (hoặc toàn bộ repository) lên GitHub.
+2. In Vercel, create a new project from the GitHub repo.
+3. Set the environment variables from step 2A inside Vercel’s project settings.
+4. Trigger the build. Vercel will deploy the Next.js app.
+5. Once live, visit https://<vercel-domain> to verify everything works in production.
+
+------------------------------------------------
+3. Configure the x10hosting PHP Backend & MySQL
+------------------------------------------------
+
+A. Database Setup
+------------------
+1. Log into the x10hosting control panel.
+2. Open the MySQL Database wizard and create a database, username, and password.
+3. Record the credentials; you will enter them in `config.php` later.
+4. Launch phpMyAdmin and select the new database.
+5. Upload `schema.sql` (found inside the `x10` folder) or paste its contents into the SQL tab.
+6. Run the script to create tables: `users`, `sessions`, and `oauth_links`.
+
+B. Configure PHP Files
+-----------------------
+1. Trong thư mục `x10`, mở file `config.php`.
+2. Xác nhận thông tin database khớp với tài khoản bạn cung cấp (mặc định đã đặt `btltwovx_hieudz` / `LdF66xA4V2xrWUnYSb5s`). Nếu
+   x10hosting thay đổi tên DB hoặc mật khẩu, cập nhật lại các trường tương ứng.
+3. (Tuỳ chọn) Nếu muốn cookie phiên hoạt động cho nhiều subdomain, đặt `'cookie_domain' => '.example.com'`.
+4. Cập nhật mảng `'allowed_origins'` để bao gồm mọi domain frontend (ví dụ `https://study.nguyenmanhhieu.info.vn` và `http://localhost:3000`).
+5. Upload toàn bộ thư mục `x10` lên hosting (ví dụ `/public_html/api`).
+6. Đảm bảo PHP version >= 8.1 trong control panel x10 để Cloudflare Turnstile hoạt động ổn định.
+
+C. Test Endpoints
+------------------
+1. Use Postman or curl to test the endpoints:
+   - `POST /register.php`
+   - `POST /login.php`
+   - `GET /logout.php`
+   - `GET /session.php`
+2. Confirm Turnstile verification passes using the secret key.
+3. Validate session cookies are created and returned with the proper lifetime.
+
+--------------------------------------------------
+4. Connect Vercel Frontend with x10 Backend
+--------------------------------------------------
+
+1. Thiết lập biến môi trường `NEXT_PUBLIC_PHP_BASE_URL` (không có dấu `/` ở cuối) tới thư mục API, ví dụ `https://backend.x10.network/api`.
+2. Sao chép giá trị này vào `.env.local` khi phát triển và cấu hình Environment Variables trên Vercel khi triển khai.
+3. Redeploy dự án trên Vercel để áp dụng cấu hình mới.
+4. Đăng ký thử một tài khoản và bật "Ghi nhớ đăng nhập" để xác nhận cookie hoạt động (cần domain khớp với cấu hình `cookie_domain`).
+
+---------------------------------
+5. OAuth Provider Configuration
+---------------------------------
+
+A. Google
+---------
+1. Visit https://console.cloud.google.com/apis/credentials.
+2. Create OAuth client ID for Web application.
+3. Add authorized redirect URI: `https://<vercel-domain>/api/auth/callback/google`.
+4. Copy client ID & secret into the `.env.local` file and Vercel dashboard.
+
+B. Facebook
+-----------
+1. Go to https://developers.facebook.com/ and create an app.
+2. Enable Facebook Login → Settings.
+3. Set redirect URI: `https://<vercel-domain>/api/auth/callback/facebook`.
+4. Put client ID & secret into environment variables.
+
+C. GitHub
+---------
+1. Navigate to https://github.com/settings/developers → OAuth Apps.
+2. Register a new app; callback URL: `https://<vercel-domain>/api/auth/callback/github`.
+3. Copy the client ID and generate a client secret; store them in environment variables.
+
+-----------------------------------------------
+6. Cloudflare Turnstile Configuration
+-----------------------------------------------
+1. Open https://dash.cloudflare.com → Turnstile.
+2. Create a new widget (nếu muốn domain riêng) hoặc dùng key đã cấp sẵn.
+3. Add allowed domains (Vercel production domain + localhost for development).
+4. Ensure the secret key is saved securely; it will be used by both Vercel and x10 PHP backend.
+
+-------------------------------------
+7. Gemini API and Usage Management
+-------------------------------------
+1. In Google AI Studio or Cloud Console, ensure all API keys listed in the `.env.example`
+   remain active and have access to Gemini 2.5 Flash and 2.0 Flash models.
+2. The backend rotates across provided keys; keep them updated and revoke compromised keys.
+3. Free-tier usage caps are enforced in `lib/usageStore.js` and relevant API routes. Adjust
+   limits there if needed.
+4. Streaming endpoints are already configured to use SSE for real-time updates.
+
+--------------------------------------------------
+8. Optional Enhancements & Maintenance
+--------------------------------------------------
+- Use Vercel Analytics & Logging to monitor traffic and AI token usage.
+- Implement cronjobs or scheduled functions to purge expired sessions in the database.
+- Harden security by enabling HTTPS-only cookies and verifying same-site attributes.
+- Back up your database regularly through x10hosting’s control panel.
+
+---------------------------------
+9. Final Launch Checklist
+---------------------------------
+- [ ] Vercel deployment succeeds and environment variables are set.
+- [ ] x10hosting PHP endpoints respond successfully with HTTPS.
+- [ ] Cloudflare Turnstile is validated on manual login/register forms.
+- [ ] OAuth logins (Google, Facebook, GitHub) are verified.
+- [ ] Gemini AI chat works with streaming, chat history, and usage limits.
+- [ ] Utility features (image search & generator) work as expected.
+- [ ] Setup instructions stored in version control for reference.
+
+---------------------------------
+10. Tạo file ZIP khi cần
+---------------------------------
+- Sau khi clone repository, chạy lệnh sau để tạo gói tương đương `StudySpace_package.zip`:
+
+  zip -r StudySpace_package.zip vercel x10 SETUP_INSTRUCTIONS.txt
+
+- Upload file ZIP lên bất kỳ hosting hoặc chia sẻ cho đồng đội khi cần.
+
+You are now ready to operate StudySpace in production. Enjoy!
